@@ -10,7 +10,6 @@ export default function Preview() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [offset, setOffset] = useState(0);
-  const [total, setTotal] = useState(0);
 
   const fetchPosts = async () => {
     setLoading(true);
@@ -19,7 +18,6 @@ export default function Preview() {
         params: { limit: LIMIT, offset },
       });
       setPosts(response.data || []);
-      setTotal(response.data?.length >= LIMIT ? offset + LIMIT + 1 : offset + (response.data?.length || 0));
     } catch (error) {
       console.error('Failed to fetch posts:', error);
       setPosts([]);
