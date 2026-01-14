@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
@@ -51,6 +52,18 @@ func ConnectDatabase() {
 	if err != nil {
 		log.Fatal("Failed to connect to database:", err)
 	}
+
+	// Configure connection pool to handle production workloads
+	sqlDB, err := database.DB()
+	if err != nil {
+		log.Fatal("Failed to get database instance:", err)
+	}
+
+	// Set connection pool settings
+	sqlDB.SetMaxIdleConns(5)
+	sqlDB.SetMaxOpenConns(10)
+	sqlDB.SetConnMaxLifetime(5 * time.Minute)
+	sqlDB.SetConnMaxIdleTime(1 * time.Minute)
 
 	DB = database
 	log.Println("Database connected successfully")
