@@ -45,7 +45,6 @@ export default function Preview() {
     <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-bold text-zinc-900">Published Articles</h2>
-        <p className="text-gray-500 text-sm mt-1">Browse all published content</p>
       </div>
 
       {loading ? (

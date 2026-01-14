@@ -60,7 +60,6 @@ export default function Dashboard() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold text-zinc-900">Dashboard</h2>
-          <p className="text-gray-500 text-sm mt-1">Manage your content</p>
         </div>
       </div>
 

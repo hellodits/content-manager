@@ -15,9 +15,6 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
           <Menu className="w-5 h-5 text-gray-600" />
         </button>
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-zinc-900 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-sm">C</span>
-          </div>
           <h1 className="text-lg font-semibold text-zinc-900">Content Manager</h1>
         </div>
       </div>
