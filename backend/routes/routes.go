@@ -17,7 +17,9 @@ func SetupRoutes(router *gin.Engine) {
 
 	// PUT /article/:id - update
 	router.PUT("/article/:id", controllers.UpdatePost)
+	router.PUT("/article/:id/", controllers.UpdatePost)
 
 	// DELETE /article/:id - delete
 	router.DELETE("/article/:id", controllers.DeletePost)
+	router.DELETE("/article/:id/", controllers.DeletePost)
 }

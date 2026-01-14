@@ -227,13 +227,13 @@ func UpdatePost(c *gin.Context) {
 
 	var post models.Post
 	if err := config.DB.First(&post, id).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Article not found"})
+		c.JSON(http.StatusNotFound, gin.H{"error": "Article not found", "details": err.Error()})
 		return
 	}
 
 	var input map[string]interface{}
 	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON format"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON format", "details": err.Error()})
 		return
 	}
 
@@ -257,7 +257,7 @@ func UpdatePost(c *gin.Context) {
 	}
 
 	if err := config.DB.Save(&post).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update article"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update article", "details": err.Error()})
 		return
 	}
 
