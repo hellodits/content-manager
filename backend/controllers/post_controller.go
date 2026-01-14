@@ -225,6 +225,7 @@ func UpdatePost(c *gin.Context) {
 		return
 	}
 
+	// Check if post exists
 	var post models.Post
 	if err := config.DB.First(&post, id).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Article not found", "details": err.Error()})
@@ -237,15 +238,17 @@ func UpdatePost(c *gin.Context) {
 		return
 	}
 
-	// Update only provided fields
+	// Build update map with only provided fields
+	updates := make(map[string]interface{})
+
 	if title, ok := input["title"].(string); ok {
-		post.Title = title
+		updates["title"] = title
 	}
 	if content, ok := input["content"].(string); ok {
-		post.Content = content
+		updates["content"] = content
 	}
 	if category, ok := input["category"].(string); ok {
-		post.Category = category
+		updates["category"] = category
 	}
 	if status, ok := input["status"].(string); ok {
 		validStatuses := map[string]bool{"Publish": true, "Draft": true, "Thrash": true}
@@ -253,14 +256,17 @@ func UpdatePost(c *gin.Context) {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Status must be Publish, Draft, or Thrash"})
 			return
 		}
-		post.Status = status
+		updates["status"] = status
 	}
 
-	if err := config.DB.Save(&post).Error; err != nil {
+	// Use Updates() instead of Save() to only update specific fields
+	if err := config.DB.Model(&post).Updates(updates).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update article", "details": err.Error()})
 		return
 	}
 
+	// Fetch updated post
+	config.DB.First(&post, id)
 	c.JSON(http.StatusOK, gin.H{"data": post})
 }
 

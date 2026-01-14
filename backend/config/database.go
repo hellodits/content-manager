@@ -6,6 +6,8 @@ import (
 	"os"
 	"time"
 
+	"backend-app/models"
+
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -51,6 +53,11 @@ func ConnectDatabase() {
 	database, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatal("Failed to connect to database:", err)
+	}
+
+	// Auto migrate the schema
+	if err := database.AutoMigrate(&models.Post{}); err != nil {
+		log.Println("Warning: Auto migration failed:", err)
 	}
 
 	// Configure connection pool to handle production workloads
